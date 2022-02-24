@@ -21,6 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{47A92142-A36A-4F82-94E8-778241DF98F4}</ProjectGuid>
     <ProjectName>power</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -95,6 +96,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.mxe64</TargetExt>
+    <OutDir>$(ProjectDir)\bin</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -265,7 +267,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" $(ProjectDir)bin\ /Y</Command>
+      <Command>xcopy /Y $(ProjectDir)bin\* H:\マイドライブ\Max\Library\okymd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

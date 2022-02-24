@@ -38,12 +38,65 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 347.0, 124.0, 123.0, 20.0 ],
+					"presentation_rect" : [ 345.0, 127.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "shutdown and reboot"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 262.0, 123.0, 45.0, 22.0 ],
+					"presentation_rect" : [ 262.0, 122.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "reboot"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 347.0, 204.0, 143.0, 20.0 ],
+					"presentation_rect" : [ 348.0, 206.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "shutdown in 30 seconds."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 262.0, 204.0, 79.0, 22.0 ],
+					"presentation_rect" : [ 262.0, 204.0, 0.0, 0.0 ],
+					"style" : "",
+					"text" : "shutdown 30"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-22",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 334.0, 165.0, 150.0, 20.0 ],
-					"presentation_rect" : [ 334.0, 167.0, 0.0, 0.0 ],
+					"patching_rect" : [ 347.0, 165.0, 91.0, 20.0 ],
 					"style" : "",
 					"text" : "Abort shudown"
 				}
@@ -55,9 +108,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 334.0, 123.0, 212.0, 20.0 ],
+					"patching_rect" : [ 347.0, 93.0, 251.0, 20.0 ],
 					"style" : "",
-					"text" : "Windows OS shutdown in 10 seconds"
+					"text" : "Windows OS shutdown in 10 seconds default"
 				}
 
 			}
@@ -69,7 +122,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 262.0, 165.0, 38.0, 22.0 ],
-					"presentation_rect" : [ 260.0, 165.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "abort"
 				}
@@ -82,7 +134,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 262.0, 123.0, 62.0, 22.0 ],
+					"patching_rect" : [ 262.0, 91.0, 62.0, 22.0 ],
 					"style" : "",
 					"text" : "shutdown"
 				}
@@ -107,7 +159,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 134.0, 263.0, 79.0, 20.0 ],
-					"presentation_rect" : [ 134.0, 261.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "Battery %"
 				}
@@ -180,6 +231,13 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -188,6 +246,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-3", 0 ]
 				}
 
 			}

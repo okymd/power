@@ -29,10 +29,12 @@ void power_assist(t_power *x, void *b, long m, long a, char *s);
 
 void power_bang(t_power *x);
 void power_dblclick(t_power *x);
-void power_shutdown(t_power* x, t_symbol* s);
+void power_shutdown(t_power* x, t_symbol* s,long argc, t_atom* argv);
 void power_doshutdown(t_power* x, t_symbol* s, long argc, t_atom* argv);
 void power_abort(t_power* x, t_symbol* s);
 void power_doabort(t_power* x, t_symbol* s, long argc, t_atom* argv);
+void power_reboot(t_power* x, t_symbol* s, long argc, t_atom* argv);
+void power_doreboot(t_power* x, t_symbol* s, long argc, t_atom* argv);
 
 
 //////////////////////// global class pointer variable
@@ -48,7 +50,8 @@ void ext_main(void *r)
 				  0L /* leave NULL!! */, A_GIMME, 0);
 
 	class_addmethod(c, (method)power_bang,			"bang", 0);
-	class_addmethod(c, (method)power_shutdown,		"shutdown", 0);
+	class_addmethod(c, (method)power_shutdown,		"shutdown", A_GIMME,0);
+	class_addmethod(c, (method)power_reboot,		"reboot",   A_GIMME,0);
  	class_addmethod(c, (method)power_abort,			"abort",	 0);
 
 
@@ -56,7 +59,7 @@ void ext_main(void *r)
 	class_addmethod(c, (method)power_assist,			"assist",		A_CANT, 0);
 	class_addmethod(c, (method)power_dblclick,			"dblclick",		A_CANT, 0);
 
-	CLASS_ATTR_SYM(c, "name", 0, t_power, name);
+	//CLASS_ATTR_SYM(c, "name", 0, t_power, name);
 
 	class_register(CLASS_BOX, c);
 	power_class = c;
@@ -66,7 +69,7 @@ void power_assist(t_power *x, void *b, long m, long a, char *s)
 {
 	if (m == ASSIST_INLET) { //inlet
 		switch (a) {
-		case 0:	sprintf(s, "bang output Status,shutdown,abort"); break;
+		case 0:	sprintf(s, "bang output status,shutdown,reboot,abort"); break;
 		}
 	}
 	else {	// outlet
@@ -105,9 +108,9 @@ void *power_new(t_symbol *s, long argc, t_atom *argv)
 }
 
 
-void power_shutdown(t_power* x, t_symbol* s)
+void power_shutdown(t_power* x, t_symbol* s,long argc , t_atom* argv)
 {
-	defer((t_object*)x, (method)power_doshutdown, s, 0, NULL);
+	defer((t_object*)x, (method)power_doshutdown, s, argc, argv);
 }
 
 void power_doshutdown(t_power* x, t_symbol* s, long argc, t_atom* argv)
@@ -117,8 +120,49 @@ void power_doshutdown(t_power* x, t_symbol* s, long argc, t_atom* argv)
 		object_post((t_object*)x, "EnablePrivileges failed");
 		return ;
 	}
-	object_post((t_object*)x, "Shutdown Windows!");
-	InitiateSystemShutdownEx(NULL, "Shutdown in 10 seconds", 10, TRUE, FALSE,"");
+	int timeout = 10;
+
+	t_atom* ap;
+	if (argc >= 1) {
+		ap = argv;
+		if (atom_gettype(ap) == A_LONG) {
+			timeout=atom_getlong(ap);
+			if (timeout < 0)timeout = 0;
+		}
+	}
+
+	char msg[128];
+	sprintf(msg, "Shutdown in %d seconds", timeout);
+	object_post((t_object*)x, msg);
+	InitiateSystemShutdownEx(NULL,msg, timeout, TRUE, FALSE, SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_FLAG_PLANNED);
+}
+void power_reboot(t_power* x, t_symbol* s,long argc,t_atom* argv)
+{
+	defer((t_object*)x, (method)power_doreboot, s, argc, argv);
+}
+
+void power_doreboot(t_power* x, t_symbol* s, long argc, t_atom* argv)
+{
+
+	if (!EnablePrivileges(SE_SHUTDOWN_NAME, TRUE)) {
+		object_post((t_object*)x, "EnablePrivileges failed");
+		return;
+	}
+	int timeout = 10;
+
+	t_atom* ap;
+	if (argc >= 1) {
+		ap = argv;
+		if (atom_gettype(ap) == A_LONG) {
+			timeout = (int)atom_getlong(ap);
+			if (timeout < 0)timeout = 0;
+		}
+	}
+
+	char msg[128];
+	sprintf(msg, "Reboot in %d seconds", timeout);
+	object_post((t_object*)x, msg);
+	InitiateSystemShutdownEx(NULL, msg, timeout, TRUE, TRUE, SHTDN_REASON_MAJOR_APPLICATION |  SHTDN_REASON_FLAG_PLANNED);//enalbe reboot
 }
 void power_abort(t_power* x, t_symbol* s)
 {
