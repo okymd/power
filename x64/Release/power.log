@@ -1,1 +1,0 @@
-﻿C:\max-sdk\source\okymd\power\power.vcxproj(70,5): error MSB4019: インポートされたプロジェクト "C:\max-includes\max_extern_common.props" が見つかりませんでした。Import 宣言 "\max-includes\max_extern_common.props" の式が正しいことと、ファイルがディスク上に存在することを確認してください。

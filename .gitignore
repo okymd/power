@@ -1,3 +1,7 @@
+[Dd]ebug
+[Rr]ease
+x64
+
 sysbuild
 *.sdf
 *.suo
